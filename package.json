@@ -1,0 +1,27 @@
+{
+  "name": "senf-lint",
+  "version": "1.0.0",
+  "description": "Linting for all `senf` applications",
+  "main": "index.js",
+  "bin": {
+    "senf-lint": "./bin/senf-lint.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellofresh/senf-lint.git"
+  },
+  "keywords": [],
+  "author": "Pepijn Senders <ps@hellofresh.com>",
+  "license": "CC-BY-3.0",
+  "bugs": {
+    "url": "https://github.com/hellofresh/senf-lint/issues"
+  },
+  "homepage": "https://github.com/hellofresh/senf-lint#readme",
+  "dependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb": "^10.0.0",
+    "eslint-plugin-import": "^1.12.0",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^6.0.0"
+  }
+}
