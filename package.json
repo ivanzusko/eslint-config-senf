@@ -1,6 +1,6 @@
 {
-  "name": "senf-lint",
-  "version": "1.0.0",
+  "name": "eslint-config-senf",
+  "version": "1.1.0",
   "description": "Linting for all `senf` applications",
   "main": "index.js",
   "repository": {
