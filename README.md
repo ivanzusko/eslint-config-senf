@@ -13,7 +13,7 @@
 To install the package:
 
 ```bash
-$ npm install --save-dev eslint-config-senf@git+ssh://{accessToken}:x-oauth-basic@github.com/hellofresh/eslint-config-senf
+$ npm install --save-dev eslint-config-senf@git+ssh://github.com/hellofresh/eslint-config-senf
 ```
 
 Then in your `.eslinrc`:
