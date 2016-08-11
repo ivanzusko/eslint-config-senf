@@ -30,6 +30,8 @@ module.exports = {
         'react/jsx-indent-props': 0,
         'no-use-before-define': 0,
         'import/prefer-default-export': 0,
+        'react/jsx-filename-extension': 0,
+        'react/jsx-no-bind': 0,
     },
     plugins: [
         'react',
