@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-senf",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Linting for all `senf` applications",
   "main": "index.js",
   "repository": {
@@ -23,6 +23,7 @@
     "eslint": "^3.2.2",
     "eslint-config-airbnb": "^10.0.0",
     "eslint-import-resolver-babel-module-alias": "^1.5.1",
+    "eslint-plugin-graphql": "^0.2.4",
     "eslint-plugin-import": "^1.12.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-react": "^6.0.0"
