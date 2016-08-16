@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellofresh/senf-lint.git"
+    "url": "git+https://github.com/hellofresh/eslint-config-senf.git"
   },
   "scripts": {
     "eslint": "eslint .",
@@ -13,11 +13,11 @@
   },
   "keywords": [],
   "author": "Pepijn Senders <ps@hellofresh.com>",
-  "license": "CC-BY-3.0",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hellofresh/senf-lint/issues"
+    "url": "https://github.com/hellofresh/eslint-config-senf/issues"
   },
-  "homepage": "https://github.com/hellofresh/senf-lint#readme",
+  "homepage": "https://github.com/hellofresh/eslint-config-senf#readme",
   "dependencies": {
     "babel-plugin-module-alias": "^1.6.0",
     "eslint": "^3.2.2",
