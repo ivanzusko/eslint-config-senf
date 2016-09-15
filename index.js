@@ -40,7 +40,7 @@ module.exports = {
     globals: {},
     settings: {
         'import/resolver': {
-            'babel-module-alias': {},
+            'babel-module': {},
         },
     },
 };
