@@ -1,4 +1,5 @@
 module.exports = {
+    ecmaVersion: 2017,
     extends: [
         'eslint-config-airbnb',
     ].map(require.resolve),
@@ -7,6 +8,7 @@ module.exports = {
         node: true,
         mocha: true,
     },
+    parser: 'babel-eslint',
     parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -34,8 +36,8 @@ module.exports = {
         'react/jsx-no-bind': 0,
     },
     plugins: [
+        'babel',
         'react',
-        'graphql',
     ],
     globals: {},
     settings: {
