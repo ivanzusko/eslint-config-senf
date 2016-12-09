@@ -50,19 +50,8 @@
                     params:
                         OUT_DIR: master-installed
 
-                -   aggregate:
-                        -   task: Lint master
-                            file: master/ci/tasks/master/lint.yml
-
-                        -   task: Test master
-                            file: master/ci/tasks/master/test.yml
-                            params:
-                                CLIENT_ID: {{client_id}}
-                                CLIENT_SECRET: {{client_secret}}
-                                API_V2_URL: {{api_v2_url}}
-                                TEST_COUNTRY: {{test_country}}
-                                TEST_USERNAME: {{test_username}}
-                                TEST_PASSWORD: {{test_password}}
+                -   task: Lint master
+                    file: master/ci/tasks/master/lint.yml
 
                 -   task: Clean master
                     file: master/ci/tasks/master/clean.yml
@@ -103,50 +92,6 @@
                     params:
                         NPM_TOKEN: {{npm_token}}
                         REGISTRY: {{npm_registry}}
-
-        -   name: test-pr
-            plan:
-                -   get: pr
-                    trigger: True
-
-                -   put: pr
-                    params:
-                        path: pr
-                        context: test
-                        status: pending
-
-                -   task: Install dependencies
-                    file: pr/ci/tasks/pr/install.yml
-                    params:
-                        OUT_DIR: pr-installed
-                    on_failure:
-                        put: pr
-                        params:
-                            path: pr
-                            context: test
-                            status: failure
-
-                -   task: Test pr
-                    file: pr/ci/tasks/pr/test.yml
-                    params:
-                        CLIENT_ID: {{client_id}}
-                        CLIENT_SECRET: {{client_secret}}
-                        API_V2_URL: {{api_v2_url}}
-                        TEST_COUNTRY: {{test_country}}
-                        TEST_USERNAME: {{test_username}}
-                        TEST_PASSWORD: {{test_password}}
-                    on_success:
-                        put: pr
-                        params:
-                            path: pr
-                            context: test
-                            status: success
-                    on_failure:
-                        put: pr
-                        params:
-                            path: pr
-                            context: test
-                            status: failure
 
         -   name: lint-pr
             plan:
