@@ -1,0 +1,13 @@
+---
+    platform: linux
+    image_resource:
+        type: docker-image
+        source:
+            repository: node
+            tag: 6.9.1
+    run:
+        path: master-cleaned/ci/scripts/build.sh
+    inputs:
+        -   name: master-cleaned
+    outputs:
+        -   name: master-built

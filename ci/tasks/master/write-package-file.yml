@@ -1,0 +1,15 @@
+---
+    platform: linux
+    image_resource:
+        type: docker-image
+        source:
+            repository: node
+            tag: 6.9.1
+    run:
+        path: ci/scripts/write-package-file.js
+        dir: master-cleaned
+    inputs:
+        -   name: master-cleaned
+        -   name: semantic-version
+    outputs:
+        -   name: master-written-package

@@ -1,0 +1,12 @@
+---
+    platform: linux
+    image_resource:
+        type: docker-image
+        source:
+            repository: node
+            tag: 6.9.1
+    run:
+        path: ci/scripts/lint.sh
+        dir: pr-installed
+    inputs:
+        -   name: pr-installed

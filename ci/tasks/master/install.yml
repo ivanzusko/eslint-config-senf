@@ -1,0 +1,14 @@
+---
+    platform: linux
+    image_resource:
+        type: docker-image
+        source:
+            repository: node
+            tag: 6.9.1
+    run:
+        path: ci/scripts/install.sh
+        dir: master
+    inputs:
+        -   name: master
+    outputs:
+        -   name: master-installed

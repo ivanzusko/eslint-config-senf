@@ -1,0 +1,186 @@
+---
+
+    resource_types:
+        -   name: pull-request
+            type: docker-image
+            source:
+                repository: jtarchie/pr
+        -   name: hf-github-releases
+            type: docker-image
+            source:
+                repository: quay.io/hellofresh/gh-status-dynamic
+
+    resources:
+        -   name: master
+            type: git
+            source:
+                uri: {{project_uri}}
+                access_token: {{github_token}}
+                branch: master
+        -   name: semantic-version
+            type: semver
+            source:
+                driver: git
+                uri: {{project_uri}}
+                branch: version
+                file: version
+                initial_version: 0.0.0
+        -   name: pr
+            type: pull-request
+            source:
+                uri: {{project_uri}}
+                repo: hellofresh/eslint-config-senf
+                access_token: {{github_token}}
+        -   name: gh-release
+            type: hf-github-releases
+            source:
+                user: hellofresh
+                repository: eslint-config-senf
+                access_token: {{github_token}}
+
+    jobs:
+        -   name: build-master
+            serial: True
+            plan:
+                -   get: master
+                    trigger: True
+
+                -   task: Install dependencies
+                    file: master/ci/tasks/master/install.yml
+                    params:
+                        OUT_DIR: master-installed
+
+                -   aggregate:
+                        -   task: Lint master
+                            file: master/ci/tasks/master/lint.yml
+
+                        -   task: Test master
+                            file: master/ci/tasks/master/test.yml
+                            params:
+                                CLIENT_ID: {{client_id}}
+                                CLIENT_SECRET: {{client_secret}}
+                                API_V2_URL: {{api_v2_url}}
+                                TEST_COUNTRY: {{test_country}}
+                                TEST_USERNAME: {{test_username}}
+                                TEST_PASSWORD: {{test_password}}
+
+                -   task: Clean master
+                    file: master/ci/tasks/master/clean.yml
+                    params:
+                        OUT_DIR: master-cleaned
+
+                -   task: Build master
+                    file: master/ci/tasks/master/build.yml
+                    params:
+                        OUT_DIR: master-built
+                        IN_DIR: master-cleaned
+                        NAME: eslint-config-senf
+
+                -   put: semantic-version
+                    params:
+                        bump: patch
+
+                -   task: Write package.json
+                    file: master/ci/tasks/master/write-package-file.yml
+                    params:
+                        OUT_DIR: master-written-package
+
+                -   task: Commit package.json
+                    file: master/ci/tasks/master/commit-package-file.yml
+                    params:
+                        GIT_EMAIL: {{git_email}}
+                        GIT_NAME: {{git_name}}
+
+                -   put: gh-release
+                    params:
+                        name: semantic-version/version
+                        tag: semantic-version/version
+                        globs:
+                            - master-built/*.tar.gz
+
+                -   task: Publish to NPM
+                    file: master/ci/tasks/master/publish.yml
+                    params:
+                        NPM_TOKEN: {{npm_token}}
+                        REGISTRY: {{npm_registry}}
+
+        -   name: test-pr
+            plan:
+                -   get: pr
+                    trigger: True
+
+                -   put: pr
+                    params:
+                        path: pr
+                        context: test
+                        status: pending
+
+                -   task: Install dependencies
+                    file: pr/ci/tasks/pr/install.yml
+                    params:
+                        OUT_DIR: pr-installed
+                    on_failure:
+                        put: pr
+                        params:
+                            path: pr
+                            context: test
+                            status: failure
+
+                -   task: Test pr
+                    file: pr/ci/tasks/pr/test.yml
+                    params:
+                        CLIENT_ID: {{client_id}}
+                        CLIENT_SECRET: {{client_secret}}
+                        API_V2_URL: {{api_v2_url}}
+                        TEST_COUNTRY: {{test_country}}
+                        TEST_USERNAME: {{test_username}}
+                        TEST_PASSWORD: {{test_password}}
+                    on_success:
+                        put: pr
+                        params:
+                            path: pr
+                            context: test
+                            status: success
+                    on_failure:
+                        put: pr
+                        params:
+                            path: pr
+                            context: test
+                            status: failure
+
+        -   name: lint-pr
+            plan:
+                -   get: pr
+                    trigger: True
+
+                -   put: pr
+                    params:
+                        path: pr
+                        context: lint
+                        status: pending
+
+                -   task: Install dependencies
+                    file: pr/ci/tasks/pr/install.yml
+                    params:
+                        OUT_DIR: pr-installed
+                    on_failure:
+                        put: pr
+                        params:
+                            path: pr
+                            context: lint
+                            status: failure
+
+                -   task: Lint pr
+                    file: pr/ci/tasks/pr/lint.yml
+                    on_success:
+                        put: pr
+                        params:
+                            path: pr
+                            context: lint
+                            status: success
+                    on_failure:
+                        put: pr
+                        params:
+                            path: pr
+                            context: lint
+                            status: failure
