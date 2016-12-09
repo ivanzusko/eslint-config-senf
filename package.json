@@ -1,6 +1,6 @@
 {
   "name": "@hellofresh/eslint-config-senf",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Linting for all `senf` applications",
   "main": "index.js",
   "repository": {
